@@ -1,6 +1,7 @@
 package com.example.calculadora
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,6 +17,7 @@ import com.example.calculadora.ui.theme.CalculadoraTheme
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import java.lang.Exception
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     private lateinit var expressaoTextView: TextView
@@ -30,8 +32,23 @@ class MainActivity : AppCompatActivity() {
         expressaoTextView = findViewById(R.id.expressao)
         resultadoTextView = findViewById(R.id.resultado)
 
+        // Restaura o estado se disponível
+        savedInstanceState?.let {
+            expressao = it.getString("expressao") ?: ""
+            expressaoTextView.text = expressao
+            resultadoTextView.text = it.getString("resultado") ?: ""
+        }
+
         setupButtons()
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Salvar a expressão e o resultado
+        outState.putString("expressao", expressao)
+        outState.putString("resultado", resultadoTextView.text.toString())
+    }
+    // teste
 
     private fun setupButtons() {
         val buttonsMap = mapOf(
@@ -54,13 +71,11 @@ class MainActivity : AppCompatActivity() {
             R.id.igual to "="
         )
 
-
         for ((buttonId, value) in buttonsMap) {
             findViewById<TextView>(buttonId).setOnClickListener {
                 handleButtonClick(value)
             }
         }
-
 
         findViewById<ImageView>(R.id.backspace).setOnClickListener {
             if (expressao.isNotEmpty()) {
@@ -118,5 +133,38 @@ class MainActivity : AppCompatActivity() {
                 expr.toDouble()
             }
         }
+    }
+
+
+    companion object{const val TAG = "prof, José Paulo " + "DEBUG.LIFE.CYCLE"}
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "Metodo onStart() foi invocado")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "Metodo onRestart() foi invocado")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "Metodo onResume() foi invocado")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "Metodo onPause() foi invocado")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "Metodo onStop() foi invocado")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "Metodo onDestroy() foi invocado")
     }
 }
