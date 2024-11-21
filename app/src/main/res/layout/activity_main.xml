@@ -161,6 +161,18 @@
             style="@style/operators_Button"
             android:text="="/>
 
+        <TextView
+            android:id="@+id/toast_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/teal_700"
+            android:text="Mostrar Toast"
+            android:textColor="@color/white"
+            android:padding="16dp"
+            android:textSize="18sp"
+            android:marginBottom="10dp"/>
+
     </LinearLayout>
 
 
