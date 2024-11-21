@@ -1,5 +1,6 @@
 package com.example.calculadora
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
@@ -16,21 +17,35 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.calculadora.ui.theme.CalculadoraTheme
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
+import android.widget.Toast
 import java.lang.Exception
 import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     private lateinit var expressaoTextView: TextView
     private lateinit var resultadoTextView: TextView
+    private lateinit var toastButton: TextView // Botão para exibir o Toast
 
     private var expressao = ""
 
+    companion object {
+        const val TAG = "MainActivityLifecycle"
+    }
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate() foi invocado")
         setContentView(R.layout.activity_main)
 
         expressaoTextView = findViewById(R.id.expressao)
         resultadoTextView = findViewById(R.id.resultado)
+        toastButton = findViewById(R.id.toast_button) // Referência ao botão de Toast
+
+        // Configura o botão para exibir o Toast
+        toastButton.setOnClickListener {
+            Toast.makeText(this, "Botão de Toast clicado!", Toast.LENGTH_SHORT).show()
+        }
 
         // Restaura o estado se disponível
         savedInstanceState?.let {
@@ -42,13 +57,43 @@ class MainActivity : AppCompatActivity() {
         setupButtons()
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart() foi invocado")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart() foi invocado")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume() foi invocado")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause() foi invocado")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop() foi invocado")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy() foi invocado")
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        Log.d(TAG, "Estado salvo com onSaveInstanceState()")
         // Salvar a expressão e o resultado
         outState.putString("expressao", expressao)
         outState.putString("resultado", resultadoTextView.text.toString())
     }
-    // teste
 
     private fun setupButtons() {
         val buttonsMap = mapOf(
@@ -133,38 +178,5 @@ class MainActivity : AppCompatActivity() {
                 expr.toDouble()
             }
         }
-    }
-
-
-    companion object{const val TAG = "prof, José Paulo " + "DEBUG.LIFE.CYCLE"}
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "Metodo onStart() foi invocado")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        Log.d(TAG, "Metodo onRestart() foi invocado")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "Metodo onResume() foi invocado")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "Metodo onPause() foi invocado")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "Metodo onStop() foi invocado")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "Metodo onDestroy() foi invocado")
     }
 }
